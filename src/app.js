@@ -21,6 +21,9 @@ class BioPulseApp {
     this.elSpo2Min = document.getElementById('val-spo2-min');
     this.elDuracion = document.getElementById('val-duracion');
 
+    this.elTableBody = document.getElementById('history-table-body');
+    this.elTotalRegistros = document.getElementById('total-registros');
+
     const btnCsv = document.getElementById('btn-export-csv');
     if (btnCsv) {
       btnCsv.addEventListener('click', () => this.exportarCSV());
@@ -41,7 +44,7 @@ class BioPulseApp {
         this.computeStats(historial);
       }
     } catch (err) {
-      this.showAlert('Error al conectar con la base de datos de Firebase');
+      this.showAlert('Error al conectar con la base de datos NoSQL de Firebase');
     }
   }
 
@@ -69,7 +72,7 @@ class BioPulseApp {
 
     this.elSpo2Avg.textContent = `${avgSpo2}%`;
     this.elSpo2Min.textContent = `${minSpo2}%`;
-    this.elDuracion.textContent = `${historial.length * 2} s`; // 1 muestra cada ~2 segundos
+    this.elDuracion.textContent = `${historial.length * 2} s`;
   }
 
   updateHistoricalView(historial) {
@@ -78,6 +81,40 @@ class BioPulseApp {
     const spo2Points = historial.map(item => item.SpO2);
 
     this.chartRenderer.render(labels, cardiacPoints, spo2Points);
+    this.renderHistoryTable(historial);
+  }
+
+  renderHistoryTable(historial) {
+    if (!this.elTableBody) return;
+
+    this.elTotalRegistros.textContent = `${historial.length} muestras registradas`;
+
+    const registrosInversos = [...historial].reverse();
+
+    this.elTableBody.innerHTML = registrosInversos.map(item => {
+      const hora = item.Timestamp.split(' ')[1] || item.Timestamp;
+      const zona = item.ZonaConfigurada || 'Reposo';
+      
+      let badgeClass = 'badge-reposo';
+      if (zona.includes('Calentamiento')) badgeClass = 'badge-calentamiento';
+      else if (zona.includes('Aeróbico') || zona.includes('Aerobica')) badgeClass = 'badge-aerobico';
+      else if (zona.includes('Templo') || zona.includes('Umbral')) badgeClass = 'badge-templo';
+      else if (zona.includes('Máximo')) badgeClass = 'badge-maximo';
+
+      const estado = (item.SpO2 < CONFIG.ALERT_THRESHOLDS.MIN_SPO2 || item.RitmoCardiaco > 150)
+        ? '<span style="color: #ef4444; font-weight: bold;">⚠️ Anomalía</span>'
+        : '<span style="color: #10b981;">✓ Normal</span>';
+
+      return `
+        <tr>
+          <td><code>${hora}</code></td>
+          <td style="font-weight: 600; color: #ef4444;">${item.RitmoCardiaco} bpm</td>
+          <td style="color: #06b6d4;">${item.SpO2}%</td>
+          <td><span class="badge ${badgeClass}">${zona}</span></td>
+          <td>${estado}</td>
+        </tr>
+      `;
+    }).join('');
   }
 
   exportarCSV() {

@@ -14,7 +14,6 @@ export class ChartRenderer {
       return;
     }
 
-    // Plugin para pintar las franjas de zonas de fondo en el gráfico
     const zoneBackgroundPlugin = {
       id: 'zoneBackgrounds',
       beforeDraw: (chart) => {
@@ -25,7 +24,7 @@ export class ChartRenderer {
           { from: 0, to: 90, color: 'rgba(59, 130, 246, 0.08)' },      // Reposo
           { from: 90, to: 108, color: 'rgba(16, 185, 129, 0.12)' },    // Z1 Calentamiento
           { from: 108, to: 126, color: 'rgba(234, 179, 8, 0.12)' },    // Z2 Aeróbica Ligera
-          { from: 126, to: 144, color: 'rgba(249, 115, 22, 0.12)' },   // Z3 Aeróbica / Umbral
+          { from: 126, to: 144, color: 'rgba(249, 115, 22, 0.12)' },   // Z3 Umbral / Templo
           { from: 144, to: 200, color: 'rgba(239, 68, 68, 0.15)' }     // Z4 / Z5 Máximo
         ];
 

@@ -47,8 +47,35 @@
       </div>
     </section>
 
+    <!-- Gráfico con bandas de zonas -->
     <section class="chart-wrapper">
       <canvas id="telemetriaChart"></canvas>
+    </section>
+
+    <!-- Tabla Historial de la Sesión -->
+    <section class="history-wrapper">
+      <div class="history-header">
+        <h2>Registro Histórico de la Sesión</h2>
+        <span id="total-registros">0 muestras registradas</span>
+      </div>
+      <div class="table-container">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Hora</th>
+              <th>Ritmo Cardíaco</th>
+              <th>SpO2</th>
+              <th>Zona de Esfuerzo</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="history-table-body">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-secondary);">Esperando telemetría...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
   </div>
 
