@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BioPulse-Vital | Monitoreo Biométrico NoSQL</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>BioPulse-Vital Telemetry</h1>
+        <span id="val-paciente">Conectando a base de datos...</span>
+      </div>
+      <div>
+        <button id="btn-export-csv" class="btn-secondary">Exportar CSV</button>
+        <span id="val-timestamp" style="margin-left: 10px;">--</span>
+      </div>
+    </header>
+
+    <div id="alert-box" class="alert-banner hidden"></div>
+
+    <section class="grid-cards">
+      <div class="card">
+        <h2>Frecuencia Cardíaca</h2>
+        <div class="value" id="val-ritmo" style="color: #ef4444;">--</div>
+      </div>
+      <div class="card">
+        <h2>Saturación Actual</h2>
+        <div class="value" id="val-spo2" style="color: #06b6d4;">--</div>
+      </div>
+      <div class="card">
+        <h2>Zona de Esfuerzo</h2>
+        <div class="value" id="val-zona" style="color: #10b981;">--</div>
+      </div>
+      <div class="card">
+        <h2>SpO2 Promedio / Mín</h2>
+        <div class="value" style="font-size: 1.3rem;">
+          <span id="val-spo2-avg">--</span> / <span id="val-spo2-min" style="color: #f87171;">--</span>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Duración Sesión</h2>
+        <div class="value" id="val-duracion">--</div>
+      </div>
+    </section>
+
+    <section class="chart-wrapper">
+      <canvas id="telemetriaChart"></canvas>
+    </section>
+  </div>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
